@@ -9,6 +9,7 @@ import { RewardModal } from "@/components/habits/RewardModal";
 import { ChevronLeft, ChevronRight, Plus, Pencil, Trash2 } from "lucide-react";
 import { useApp } from "@/context/AppContext";
 import { useState, useEffect } from "react";
+import { CatholicContent } from "@/components/ui/CatholicContent";
 
 const MOCK_STATS_LABELS = [
     { icon: "🔥", label: "Streak" },
@@ -35,7 +36,7 @@ export default function DashboardPage() {
     const {
         habits, toggleHabitDay, addHabit, deleteHabit,
         currentDayIndex, completedToday, totalHabits, progressToday,
-        rebootDays,
+        rebootDays, faithLevel
     } = useApp();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -111,6 +112,9 @@ export default function DashboardPage() {
                     <BatSVG progress={progressToday} />
                 </div>
             </section>
+
+            {/* Conteúdo Católico (Apenas para perfis Católicos) */}
+            {faithLevel === 'CATHOLIC' && <CatholicContent />}
 
             {/* Stats Compactas */}
             <section className="grid grid-cols-4 gap-2">

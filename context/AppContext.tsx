@@ -38,6 +38,11 @@ interface AppContextValue {
     startReboot: () => void;
     resetReboot: () => void;
 
+    // Onboarding
+    onboardingComplete: boolean;
+    completeOnboarding: (data: { age: number; faith_level: string; time_with_problem: string; motivation: string }) => Promise<void>;
+    faithLevel: string | null;
+
     // Pilar mais fraco (para Alfred)
     weakestPillar: string;
 }
@@ -70,6 +75,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [habits, setHabitsState] = useState<Habit[]>([]);
     const [rebootStartDate, setRebootStartDate] = useState<string | null>(null);
     const [profileId, setProfileId] = useState<string | null>(null);
+    const [onboardingComplete, setOnboardingComplete] = useState<boolean>(true); // Default true para evitar flash em quem já fez
+    const [faithLevel, setFaithLevel] = useState<string | null>(null);
 
     // ─── Autenticação Inicial ────────────────────────────────────────::::
     useEffect(() => {
@@ -125,6 +132,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
                 if (profile) {
                     setProfileId(profile.id);
                     setRebootStartDate(profile.created_at); // Simplificação provisória
+                    setOnboardingComplete(profile.onboarding_complete || false);
+                    setFaithLevel(profile.faith_level || null);
                 }
 
                 // 2. Pegar Hábitos Ativos do Usuário
@@ -311,6 +320,27 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setRebootStartDate(now);
     }, []);
 
+    // Onboarding
+    const completeOnboarding = useCallback(async (data: { age: number; faith_level: string; time_with_problem: string; motivation: string }) => {
+        if (!user) return;
+
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .update({
+                    ...data,
+                    onboarding_complete: true
+                })
+                .eq('id', user.id);
+
+            if (error) throw error;
+            setOnboardingComplete(true);
+        } catch (error) {
+            console.error("Erro ao completar onboarding", error);
+            throw error;
+        }
+    }, [user, supabase]);
+
     // ─── Computed ────────────────────────────────────────────────────────────
     const currentDayIndex = getTodayColumnIndex();
     const completedToday = habits.filter(h => h.completions[currentDayIndex]).length;
@@ -333,6 +363,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             habits, setHabits, toggleHabitDay, addHabit, deleteHabit,
             currentDayIndex, completedToday, totalHabits, progressToday,
             rebootDays, rebootStartDate, startReboot, resetReboot,
+            onboardingComplete, completeOnboarding, faithLevel,
             weakestPillar,
         }}>
             {children}
