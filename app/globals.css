@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-base: #080a0f;
+    --bg-card: #121620;
+    --bg-card-hover: #1a202c;
+    --border-subtle: #1f2937;
+    --border-mid: #374151;
+    --yellow: #f5c518;
+    --yellow-dim: #c9a200;
+    --yellow-glow: rgba(245, 197, 24, 0.2);
+    --cyan: #4bd2c9;
+    /* Ajustado para se alinhar com o print */
+    --cyan-dim: rgba(75, 210, 201, 0.2);
+    /* Fundo do botão ativo na navbar */
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --green: #10b981;
+    --green-dim: rgba(16, 185, 129, 0.2);
+    --red: #ef4444;
+    --red-dim: rgba(239, 68, 68, 0.2);
+    --bat-glow: rgba(245, 197, 24, 0.26);
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
+    /* Safe-area fallback for non-fixed elements */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Prevent auto-zoom on iOS when focusing inputs */
+  input, select, textarea, button {
+    font-size: 16px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .btn-touch {
+    @apply active:scale-95 transition-transform duration-200;
+  }
+
+  .glass-card {
+    /* Glassmorfismo tático The Abyss */
+    @apply bg-[#121620]/40 backdrop-blur-md border border-white/5 shadow-2xl;
+  }
+
+  .glow-cyan-hover {
+    @apply hover:shadow-[0_0_15px_rgba(0,212,255,0.3)] transition-shadow duration-300;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulseSlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes pulseSlow {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .8;
+  }
+}
+
+/* Custom Scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-mid);
+}
+
+/* Utils overrides */
+.shadow-glow {
+  box-shadow: 0 0 20px var(--bat-glow);
+}
+
+.shadow-cyan {
+  box-shadow: 0 0 15px var(--cyan-dim);
+}

@@ -1,0 +1,26 @@
+{
+  "name": "SHADOWS - Discipline is Freedom",
+  "short_name": "SHADOWS",
+  "description": "Substitua maus hábitos por bons. Torne-se o homem que você pode ser.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020408",
+  "theme_color": "#020408",
+  "orientation": "portrait",
+  "categories": ["lifestyle", "health", "fitness"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/bat.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/bat.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

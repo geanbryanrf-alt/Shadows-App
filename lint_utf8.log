@@ -1,0 +1,67 @@
+﻿
+> shadows@0.1.0 lint
+> next lint
+
+node.exe : 
+No linha:1 caractere:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (:String) [],    
+ RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+./app/(app)/ameacas/pag
+e.tsx
+Error: Parsing error: 
+Unexpected token. Did 
+you mean `{'}'}` or 
+`&rbrace;`?
+
+./app/login/page.tsx
+44:23  Error: 
+Unexpected any. 
+Specify a different 
+type.  @typescript-esli
+nt/no-explicit-any
+
+./components/habits/Add
+HabitModal.tsx
+25:31  Error: Parsing 
+error: ',' expected.
+
+./components/ui/SOSButt
+on.tsx
+60:8  Warning: React 
+Hook useEffect has a 
+missing dependency: 
+'timeLeft'. Either 
+include it or remove 
+the dependency array.  
+react-hooks/exhaustive-
+deps
+
+./lib/supabase-server.t
+s
+1:35  Error: 
+'CookieOptions' is 
+defined but never 
+used.  @typescript-esli
+nt/no-unused-vars
+
+info  - Need to 
+disable some ESLint 
+rules? Learn more 
+here: https://nextjs.or
+g/docs/basic-features/e
+slint#disabling-rules

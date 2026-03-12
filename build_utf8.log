@@ -1,0 +1,81 @@
+﻿
+> shadows@0.1.0 build
+> next build
+
+  Ôû▓ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ Ô£ô (pwa) Compiling for server...
+ Ô£ô (pwa) Compiling for server...
+ Ô£ô (pwa) Compiling for client (static)...
+ Ôùï (pwa) Service worker: C:\Users\Gean Bryan\Desktop\App Fortaleza\public\sw.js
+ Ôùï (pwa)   URL: /sw.js
+ Ôùï (pwa)   Scope: /
+node.exe : Failed to 
+compile.
+No linha:1 caractere:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Failed to com   
+ pile.:String) [],     
+RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+
+./components/habits/Add
+HabitModal.tsx
+Error: 
+  [31mx[0m 
+Unexpected token 
+`AnimatePresence`. 
+Expected jsx identifier
+    ,-[[36;1;4mC:\User
+s\Gean 
+Bryan\Desktop\App Forta
+leza\components\habits\
+AddHabitModal.tsx[0m:5
+1:1]
+ [2m51[0m |     };
+ [2m52[0m | 
+ [2m53[0m |     
+return (
+ [2m54[0m |         
+<AnimatePresence>
+    : [31;1m         
+^^^^^^^^^^^^^^^[0m
+ [2m55[0m |          
+   {isOpen && (
+ [2m56[0m |          
+       <div 
+className="fixed 
+inset-0 z-[100] flex 
+items-center 
+justify-center px-4">
+ [2m56[0m |          
+           <motion.div
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for 
+requested module:
+./components/habits/Add
+HabitModal.tsx
+./app/(app)/page.tsx
+
+
+> Build failed because 
+of webpack errors
