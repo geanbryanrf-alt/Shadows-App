@@ -14,13 +14,10 @@ export function BatSVG({ progress, className }: { progress: number; className?: 
     const maxSize = 180;
     const size = minSize + clampedProgress * (maxSize - minSize);
 
-    // Opacidade: começa em 0 (invisível) e chega a 1.0 (totalmente visível)
-    const opacity = clampedProgress;
+    // Opacidade: começa em 0.2 (visível pálido) e chega a 1.0 (totalmente visível)
+    const opacity = 0.2 + clampedProgress * 0.8;
 
-    // Contraste: sutil no início, mais definido no final
-    const contrast = 50 + clampedProgress * 54; // 50% → 104%
-
-    // Glow especial ao atingir 100%
+    // Contraste e Cor: Morcego Branco Sólido
     const isFullyAwake = clampedProgress >= 1;
     const glowStyle = isFullyAwake
         ? "drop-shadow(0 0 25px rgba(0, 212, 255, 0.7)) drop-shadow(0 0 50px rgba(0, 212, 255, 0.3))"
@@ -28,15 +25,17 @@ export function BatSVG({ progress, className }: { progress: number; className?: 
             ? `drop-shadow(0 0 ${Math.round(clampedProgress * 15)}px rgba(0, 212, 255, ${clampedProgress * 0.4}))`
             : "none";
 
-    const filterStyle = `brightness(0) invert(1) contrast(${contrast}%) ${glowStyle}`.trim();
+    // O filtro brightness(0) invert(1) faz ficar branco puro se for uma imagem escura
+    // Adicionamos brightness(1.5) no final para brilhar mais se quiser
+    const filterStyle = `brightness(0) invert(1) ${glowStyle}`.trim();
 
     // Animação de bater asas (wing flap)
     const flapVariants: Variants = {
         flap: {
-            scaleX: [1, 1.1, 1], // Expande e contrai horizontalmente
-            scaleY: [1, 0.9, 1], // Leve contração vertical
+            scaleX: [1, 1.25, 1], // Expande mais horizontalmente (asas batendo)
+            scaleY: [1, 0.85, 1], // Contrai verticalmente
             transition: {
-                duration: isFullyAwake ? 1.5 : 3, // Mais rápido quando desperto
+                duration: isFullyAwake ? 0.8 : 2.5, // Bem mais rápido quando desperto
                 repeat: Infinity,
                 ease: "easeInOut",
             }
@@ -71,6 +70,7 @@ export function BatSVG({ progress, className }: { progress: number; className?: 
                     alt="Morcego — O Protocolo"
                     fill
                     className="object-contain"
+                    priority
                     unoptimized
                 />
             </motion.div>

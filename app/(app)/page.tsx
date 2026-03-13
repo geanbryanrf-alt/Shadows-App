@@ -214,7 +214,7 @@ export default function DashboardPage() {
                                             key={habit.id}
                                             className="grid grid-cols-[160px_repeat(7,1fr)_36px] min-w-max gap-1 items-center px-0 py-3 group border-b border-white/[0.03] last:border-0 hover:bg-white/[0.01] transition-all"
                                         >
-                                            <div className="flex items-center gap-2 overflow-hidden pr-2">
+                                            <div className="flex items-center gap-2 overflow-hidden pr-2 min-w-[160px]">
                                                 <span className="text-lg flex-shrink-0">{habit.emoji}</span>
                                                 <span className="text-[12px] text-text-primary font-semibold line-clamp-1">
                                                     {habit.name}

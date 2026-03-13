@@ -197,7 +197,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
                 }
 
                 if (fetchedHabits.length > 0) {
-                    await loadLogsForDate(new Date());
+                    const initialHabits: Habit[] = fetchedHabits.map((uh: any) => ({
+                        id: uh.habits.id,
+                        name: uh.habits.name,
+                        emoji: uh.habits.emoji,
+                        pillar: uh.habits.pillar,
+                        completions: new Array(7).fill(false)
+                    }));
+                    
+                    // Definimos os hábitos primeiro para que o pre-render mostre a lista
+                    setHabitsState(initialHabits);
+                    
+                    // Carregamos os logs passando a lista inicial para evitar depender do estado que ainda não atualizou
+                    await loadLogsForDate(new Date(), initialHabits);
                 }
             } catch (error) {
                 console.error("Falha ao carregar dados", error);
@@ -205,7 +217,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         };
 
         loadData();
-    }, [user, supabase]);
+    }, [user, supabase]); // Removido loadLogsForDate da dependência para evitar loops se mudarmos a função
 
     // ─── Mutações (Optimistic UI) ────────────────────────────────────────::::
     
@@ -291,7 +303,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ]);
     }, [user, supabase]);
 
-    const loadLogsForDate = useCallback(async (baseDate: Date) => {
+    const loadLogsForDate = useCallback(async (baseDate: Date, currentHabits?: Habit[]) => {
         if (!user) return;
         
         const dow = baseDate.getDay();
@@ -320,10 +332,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
             }
         });
 
-        setHabitsState(prev => prev.map(h => ({
-            ...h,
-            completions: logMap[h.id] || new Array(7).fill(false)
-        })));
+        const updater = (prev: Habit[]) => {
+            const listToUse = currentHabits || prev;
+            return listToUse.map(h => ({
+                ...h,
+                completions: logMap[h.id] || new Array(7).fill(false)
+            }));
+        };
+
+        setHabitsState(updater);
     }, [user, supabase]);
 
     // Editar Hábito
