@@ -413,6 +413,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return (
         <AppContext.Provider value={{
             user, isLoadingAuth,
+            habits, setHabits, toggleHabitDay, addHabit, editHabit, deleteHabit,
             currentDayIndex, completedToday, totalHabits, progressToday, loadLogsForDate,
             rebootDays, rebootStartDate, startReboot, resetReboot,
             onboardingComplete, completeOnboarding, faithLevel, age, motivation, timeWithProblem,
