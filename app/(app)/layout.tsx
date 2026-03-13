@@ -8,6 +8,7 @@ import { AmbientLight } from "@/components/ui/AmbientLight";
 import { useApp } from "@/context/AppContext";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -57,4 +58,4 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
     );
 }
 
-const cn = (...classes: any[]) => classes.filter(Boolean).join(" ");
+

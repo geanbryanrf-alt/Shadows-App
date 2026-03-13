@@ -63,7 +63,7 @@ export default function PrivacidadePage() {
 
                     <section className="mt-8 p-6 rounded-2xl bg-white/5 border border-white/10 text-center">
                         <p className="text-xs text-white/40 leading-relaxed italic">
-                            "Nenhum homem é livre se não for senhor de si mesmo."
+                            &quot;Nenhum homem é livre se não for senhor de si mesmo.&quot;
                         </p>
                     </section>
                 </div>

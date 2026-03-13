@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useApp } from "@/context/AppContext";
 import { createClient } from "@/lib/supabase-browser";
 import { useRouter } from "next/navigation";
-import { Shield, Bell, LogOut, RefreshCcw, User, Target, Zap, Cross } from "lucide-react";
+import { Zap, Target, Bell, Cross, LogOut } from "lucide-react";
 
 export default function PerfilPage() {
     const { 
@@ -115,7 +115,7 @@ export default function PerfilPage() {
                     <div className="p-4 flex flex-col gap-1.5">
                         <span className="text-[12px] text-white/60">Sua Motivação (O Porquê)</span>
                         <p className="text-[13px] text-white font-serif italic leading-relaxed">
-                            "{motivation || "Construindo uma vida de liberdade e propósito."}"
+                            &quot;{motivation || "Construindo uma vida de liberdade e propósito."}&quot;
                         </p>
                     </div>
                 </div>

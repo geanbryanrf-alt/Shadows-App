@@ -174,7 +174,7 @@ export default function DashboardPage() {
                                             <Plus size={24} />
                                         </div>
                                         <p className="text-[13px] text-white/40 font-serif italic">
-                                            "Sua fortaleza está vazia. Comece a construir sua primeira torre adicionando um hábito abaixo."
+                                            &quot;Sua fortaleza está vazia. Comece a construir sua primeira torre adicionando um hábito abaixo.&quot;
                                         </p>
                                     </motion.div>
                                 ) : (

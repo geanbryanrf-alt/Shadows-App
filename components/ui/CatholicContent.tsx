@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cross, Quote, Shield } from "lucide-react";
+import { Quote, Cross } from "lucide-react";
+
 
 const CATHOLIC_QUOTES = [
     {
@@ -62,7 +63,7 @@ export function CatholicContent() {
                 </div>
 
                 <p className="font-serif text-[15px] text-white/90 leading-relaxed italic mb-4">
-                    "{quote.text}"
+                    &quot;{quote.text}&quot;
                 </p>
                 
                 <div className="flex items-center justify-between">

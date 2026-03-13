@@ -48,7 +48,7 @@ export default function TermosPage() {
                             <span className="opacity-20 text-xs">03.</span> Responsabilidade do Usuário
                         </h2>
                         <p className="text-white/60">
-                            Você é o único responsável pela veracidade dos dados fornecidos e pela manutenção do segredo de sua conta. O progresso ("Reboot Days") é uma ferramenta de gamificação baseada na sua autodeclaração; a integridade do processo depende da sua honestidade.
+                            Você é o único responsável pela veracidade dos dados fornecidos e pela manutenção do segredo de sua conta. O progresso (&quot;Reboot Days&quot;) é uma ferramenta de gamificação baseada na sua autodeclaração; a integridade do processo depende da sua honestidade.
                         </p>
                     </section>
 
@@ -57,13 +57,13 @@ export default function TermosPage() {
                             <span className="opacity-20 text-xs">04.</span> Propriedade Intelectual
                         </h2>
                         <p className="text-white/60">
-                            O design, marcas, logos e o "Protocolo Shadows" são propriedade intelectual do projeto. A reprodução não autorizada para fins comerciais é estritamente proibida.
+                            O design, marcas, logos e o &quot;Protocolo Shadows&quot; são propriedade intelectual do projeto. A reprodução não autorizada para fins comerciais é estritamente proibida.
                         </p>
                     </section>
 
                     <section className="mt-8 p-6 rounded-2xl bg-white/5 border border-white/10 text-center">
                         <p className="text-xs text-white/40 leading-relaxed italic">
-                            "A disciplina é a base sobre a qual se constrói a verdadeira liberdade."
+                            &quot;A disciplina é a base sobre a qual se constrói a verdadeira liberdade.&quot;
                         </p>
                     </section>
                 </div>
