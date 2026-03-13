@@ -28,7 +28,20 @@ export function BatSVG({ progress, className }: { progress: number; className?: 
             ? `drop-shadow(0 0 ${Math.round(clampedProgress * 15)}px rgba(0, 212, 255, ${clampedProgress * 0.4}))`
             : "none";
 
-    const filterStyle = `invert(1) contrast(${contrast}%) ${glowStyle}`.trim();
+    const filterStyle = `brightness(0) invert(1) contrast(${contrast}%) ${glowStyle}`.trim();
+
+    // Animação de bater asas (wing flap)
+    const flapVariants = {
+        flap: {
+            scaleX: [1, 1.1, 1], // Expande e contrai horizontalmente
+            scaleY: [1, 0.9, 1], // Leve contração vertical
+            transition: {
+                duration: isFullyAwake ? 1.5 : 3, // Mais rápido quando desperto
+                repeat: Infinity,
+                ease: "easeInOut",
+            }
+        }
+    };
 
     return (
         <motion.div
@@ -45,10 +58,14 @@ export function BatSVG({ progress, className }: { progress: number; className?: 
             }}
             transition={{ duration: 1.2, ease: "easeOut" }}
         >
-            <div className={cn(
-                "relative w-full h-full",
-                isFullyAwake && "animate-float"
-            )}>
+            <motion.div 
+                className={cn(
+                    "relative w-full h-full",
+                    isFullyAwake && "animate-float"
+                )}
+                variants={flapVariants}
+                animate="flap"
+            >
                 <Image
                     src="/bat-transparent.png"
                     alt="Morcego — O Protocolo"
@@ -56,7 +73,7 @@ export function BatSVG({ progress, className }: { progress: number; className?: 
                     className="object-contain"
                     unoptimized
                 />
-            </div>
+            </motion.div>
         </motion.div>
     );
 }
