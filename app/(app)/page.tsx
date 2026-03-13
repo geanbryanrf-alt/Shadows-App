@@ -6,6 +6,8 @@ import { BatSVG } from "@/components/bat/BatSVG";
 import { motion, AnimatePresence } from "framer-motion";
 import { AddHabitModal } from "@/components/habits/AddHabitModal";
 import { RewardModal } from "@/components/habits/RewardModal";
+import { EditHabitModal } from "@/components/habits/EditHabitModal";
+import { Habit } from "@/context/AppContext";
 import { ChevronLeft, ChevronRight, Plus, Pencil, Trash2 } from "lucide-react";
 import { useApp } from "@/context/AppContext";
 import { useState, useEffect } from "react";
@@ -34,15 +36,47 @@ function getWeekDates(): number[] {
 
 export default function DashboardPage() {
     const {
-        habits, toggleHabitDay, addHabit, deleteHabit,
+        habits, toggleHabitDay, addHabit, editHabit, deleteHabit,
         currentDayIndex, completedToday, totalHabits, progressToday,
-        rebootDays, faithLevel
+        rebootDays, faithLevel, loadLogsForDate
     } = useApp();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isRewardOpen, setIsRewardOpen] = useState(false);
+    const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
+    const [weekOffset, setWeekOffset] = useState(0); // 0 = semana atual, -1 = semana anterior...
+    
     const hasShownReward = useRef(false);
-    const weekDates = getWeekDates();
+
+    // Calcula os 7 dias da semana baseado no offset
+    const getWeekDates = (offset: number): number[] => {
+        const d = new Date();
+        d.setDate(d.getDate() + (offset * 7));
+        const dow = d.getDay();
+        const mondayOffset = dow === 0 ? -6 : 1 - dow;
+        return Array.from({ length: 7 }, (_, i) => {
+            const temp = new Date(d);
+            temp.setDate(d.getDate() + mondayOffset + i);
+            return temp.getDate();
+        });
+    };
+
+    const weekDates = getWeekDates(weekOffset);
+    const currentMonth = (() => {
+        const d = new Date();
+        d.setDate(d.getDate() + (weekOffset * 7));
+        return d.toLocaleString("pt-BR", { month: "long", year: "numeric" }).toUpperCase();
+    })();
+
+    const handlePrevWeek = () => setWeekOffset(prev => prev - 1);
+    const handleNextWeek = () => setWeekOffset(prev => prev + 1);
+
+    // Carregar logs quando mudar a semana
+    useEffect(() => {
+        const d = new Date();
+        d.setDate(d.getDate() + (weekOffset * 7));
+        loadLogsForDate(d);
+    }, [weekOffset]);
 
     // Detectar dia perfeito e mostrar recompensa
     useEffect(() => {
@@ -69,6 +103,13 @@ export default function DashboardPage() {
             <RewardModal
                 isOpen={isRewardOpen}
                 onClose={() => setIsRewardOpen(false)}
+            />
+            <EditHabitModal 
+                isOpen={!!editingHabit}
+                onClose={() => setEditingHabit(null)}
+                habit={editingHabit}
+                onSave={editHabit}
+                onDelete={deleteHabit}
             />
 
             {/* HUD Centralizada */}
@@ -133,11 +174,11 @@ export default function DashboardPage() {
             <section className="glass-card rounded-3xl overflow-hidden border border-white/5 bg-[#0a0d14]/40">
                 {/* Header Navegação */}
                 <div className="p-4 sm:p-6 flex items-center justify-between border-b border-white/5 font-serif">
-                    <button className="text-text-muted hover:text-white transition-colors"><ChevronLeft size={20} /></button>
+                    <button onClick={handlePrevWeek} className="text-text-muted hover:text-white transition-colors p-2"><ChevronLeft size={20} /></button>
                     <span className="text-[13px] uppercase tracking-[0.3em] text-text-primary font-bold">
-                        {new Date().toLocaleString("pt-BR", { month: "long", year: "numeric" }).toUpperCase()}
+                        {currentMonth}
                     </span>
-                    <button className="text-text-muted hover:text-white transition-colors"><ChevronRight size={20} /></button>
+                    <button onClick={handleNextWeek} className="text-text-muted hover:text-white transition-colors p-2"><ChevronRight size={20} /></button>
                 </div>
 
                 {/* Wrapper com scroll horizontal em telas pequenas */}
@@ -152,7 +193,7 @@ export default function DashboardPage() {
                                     <span className="text-[9px] text-text-muted font-medium">{day}</span>
                                     <span className={cn(
                                         "text-[13px] font-serif font-bold",
-                                        i === currentDayIndex
+                                        i === currentDayIndex && weekOffset === 0
                                             ? "text-cyan drop-shadow-[0_0_5px_rgba(0,212,255,0.4)]"
                                             : "text-text-secondary"
                                     )}>{weekDates[i]}</span>
@@ -201,7 +242,7 @@ export default function DashboardPage() {
                                                             const dow = d.getDay();
                                                             const mondayOffset = dow === 0 ? -6 : 1 - dow;
                                                             const clickDate = new Date(d);
-                                                            clickDate.setDate(d.getDate() + mondayOffset + i);
+                                                            clickDate.setDate(d.getDate() + (weekOffset * 7) + mondayOffset + i);
                                                             toggleHabitDay(habit.id, i, clickDate.toISOString());
                                                         }}
                                                         className={cn(
@@ -230,7 +271,12 @@ export default function DashboardPage() {
 
                                             {/* Ações */}
                                             <div className="flex items-center justify-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <button className="text-text-muted hover:text-cyan p-1 transition-colors"><Pencil size={13} /></button>
+                                                <button 
+                                                    onClick={() => setEditingHabit(habit)}
+                                                    className="text-text-muted hover:text-cyan p-1 transition-colors"
+                                                >
+                                                    <Pencil size={13} />
+                                                </button>
                                                 {!habit.name.toLowerCase().includes('nofap') && !habit.name.toLowerCase().includes('retenção') && (
                                                     <button onClick={() => deleteHabit(habit.id)} className="text-text-muted hover:text-red-400 p-1 transition-colors"><Trash2 size={13} /></button>
                                                 )}

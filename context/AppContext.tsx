@@ -24,6 +24,7 @@ interface AppContextValue {
     setHabits: (h: Habit[] | ((prev: Habit[]) => Habit[])) => void;
     toggleHabitDay: (habitId: string, dayIndex: number, dateISO: string) => void;
     addHabit: (h: { name: string; emoji: string; pillar: string; block: string; xp_value: number }) => void;
+    editHabit: (id: string, updates: Partial<Habit>) => void;
     deleteHabit: (habitId: string) => void;
 
     // Progresso
@@ -31,6 +32,7 @@ interface AppContextValue {
     completedToday: number;
     totalHabits: number;
     progressToday: number;
+    loadLogsForDate: (date: Date) => Promise<void>;
 
     // Reboot
     rebootDays: number;
@@ -195,15 +197,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
                 }
 
                 if (fetchedHabits.length > 0) {
-                    // 3. Pegar Logs da Semana Atual para montar completions[]
-                    const formatted: Habit[] = fetchedHabits.filter((uh: any) => uh.habits).map((uh: any) => ({
-                        id: uh.habits.id,
-                        name: uh.habits.name,
-                        emoji: uh.habits.emoji || "🔥",
-                        pillar: uh.habits.pillar,
-                        completions: new Array(7).fill(false) 
-                    }));
-                    setHabitsState(formatted);
+                    await loadLogsForDate(new Date());
                 }
             } catch (error) {
                 console.error("Falha ao carregar dados", error);
@@ -297,6 +291,56 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ]);
     }, [user, supabase]);
 
+    const loadLogsForDate = useCallback(async (baseDate: Date) => {
+        if (!user) return;
+        
+        const dow = baseDate.getDay();
+        const mondayOffset = dow === 0 ? -6 : 1 - dow;
+        const monday = new Date(baseDate);
+        monday.setDate(baseDate.getDate() + mondayOffset);
+        monday.setHours(0, 0, 0, 0);
+
+        const nextMonday = new Date(monday);
+        nextMonday.setDate(monday.getDate() + 7);
+
+        const { data: logs } = await supabase
+            .from('daily_logs')
+            .select('habit_id, date, completed')
+            .eq('user_id', user.id)
+            .gte('date', monday.toISOString().split('T')[0])
+            .lt('date', nextMonday.toISOString().split('T')[0]);
+
+        const logMap: Record<string, boolean[]> = {};
+        logs?.forEach(log => {
+            const logDate = new Date(log.date + 'T00:00:00');
+            const diff = Math.floor((logDate.getTime() - monday.getTime()) / (1000 * 60 * 60 * 24));
+            if (diff >= 0 && diff < 7) {
+                if (!logMap[log.habit_id]) logMap[log.habit_id] = new Array(7).fill(false);
+                logMap[log.habit_id][diff] = log.completed;
+            }
+        });
+
+        setHabitsState(prev => prev.map(h => ({
+            ...h,
+            completions: logMap[h.id] || new Array(7).fill(false)
+        })));
+    }, [user, supabase]);
+
+    // Editar Hábito
+    const editHabit = useCallback(async (id: string, updates: Partial<Habit>) => {
+        if (!user) return;
+
+        // Optimistic
+        setHabitsState(prev => prev.map(h => h.id === id ? { ...h, ...updates } : h));
+
+        // Cloud
+        await supabase.from('habits').update({
+            name: updates.name,
+            emoji: updates.emoji,
+            pillar: updates.pillar
+        }).eq('id', id);
+    }, [user, supabase]);
+
     // Deletar Hábito
     const deleteHabit = useCallback(async (id: string) => {
         if(!user) return;
@@ -309,13 +353,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
         // Optimistic
         setHabitsState(prev => prev.filter(h => h.id !== id));
         
-        // Nuvem (Remover vínculo do usuário na verdade é mais seguro que 'delete')
+        // Nuvem
         await supabase.from('user_habits')
             .update({ is_active: false })
             .eq('user_id', user.id)
             .eq('habit_id', id);
 
-    }, [user, supabase]);
+    }, [user, supabase, habits]);
 
     // Operações de Reboot
     const startReboot = useCallback(() => {
@@ -369,8 +413,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return (
         <AppContext.Provider value={{
             user, isLoadingAuth,
-            habits, setHabits, toggleHabitDay, addHabit, deleteHabit,
-            currentDayIndex, completedToday, totalHabits, progressToday,
+            currentDayIndex, completedToday, totalHabits, progressToday, loadLogsForDate,
             rebootDays, rebootStartDate, startReboot, resetReboot,
             onboardingComplete, completeOnboarding, faithLevel, age, motivation, timeWithProblem,
             weakestPillar,

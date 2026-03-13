@@ -154,9 +154,9 @@ export function AddHabitModal({ isOpen, onClose, onAdd }: AddHabitModalProps) {
                                 <button
                                     type="submit"
                                     disabled={!name.trim()}
-                                    className="w-full bg-cyan/80 hover:bg-cyan py-5 rounded-2xl text-[#080a0f] font-black uppercase tracking-[0.3em] shadow-[0_0_20px_rgba(0,212,255,0.3)] transition-all disabled:opacity-30 disabled:shadow-none btn-touch mt-4 text-sm"
+                                    className="w-full bg-cyan hover:bg-[#00e5ff] py-5 rounded-2xl text-[#080a0f] font-black uppercase tracking-[0.3em] shadow-[0_10px_30px_rgba(0,212,255,0.4)] transition-all disabled:opacity-20 disabled:grayscale disabled:shadow-none btn-touch mt-4 text-sm"
                                 >
-                                    Adicionar
+                                    Adicionar Hábito
                                 </button>
                             </form>
                         </div>

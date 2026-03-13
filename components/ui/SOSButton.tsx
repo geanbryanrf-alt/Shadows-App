@@ -66,7 +66,7 @@ export function SOSButton() {
     return (
         <>
             {/* Botão flutuante */}
-            <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md px-4 z-50 pointer-events-none">
+            <div className="fixed bottom-32 left-1/2 -translate-x-1/2 w-full max-w-md px-4 z-40 pointer-events-none">
                 <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.95 }}
