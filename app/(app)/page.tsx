@@ -266,9 +266,26 @@ export default function DashboardPage() {
                                                 >
                                                     <Pencil size={13} />
                                                 </button>
-                                                {!habit.name.toLowerCase().includes('nofap') && !habit.name.toLowerCase().includes('retenção') && (
-                                                    <button onClick={() => deleteHabit(habit.id)} className="text-text-muted hover:text-red-400 p-1 transition-colors"><Trash2 size={13} /></button>
-                                                )}
+                                                {(() => {
+                                                    const isFixedType = habit.name.toLowerCase().includes('nofap') || habit.name.toLowerCase().includes('retenção');
+                                                    if (!isFixedType) return (
+                                                        <button onClick={() => deleteHabit(habit.id)} className="text-text-muted hover:text-red-400 p-1 transition-colors"><Trash2 size={13} /></button>
+                                                    );
+                                                    
+                                                    // Se for do tipo fixo, só mostra o lixo se houver outros do mesmo tipo (duplicados)
+                                                    const othersOfSameType = habits.filter(h => 
+                                                        h.id !== habit.id && 
+                                                        (h.name.toLowerCase().includes('nofap') || h.name.toLowerCase().includes('retenção'))
+                                                    );
+                                                    
+                                                    if (othersOfSameType.length > 0) {
+                                                        return (
+                                                            <button onClick={() => deleteHabit(habit.id)} className="text-text-muted hover:text-red-400 p-1 transition-colors"><Trash2 size={13} /></button>
+                                                        );
+                                                    }
+                                                    
+                                                    return null;
+                                                })()}
                                             </div>
                                         </motion.div>
                                     ))

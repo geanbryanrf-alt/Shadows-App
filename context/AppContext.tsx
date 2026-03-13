@@ -358,13 +358,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }).eq('id', id);
     }, [user, supabase]);
 
-    // Deletar Hábito
     const deleteHabit = useCallback(async (id: string) => {
         if(!user) return;
         
         const habitToDel = habits.find(h => h.id === id);
-        if (habitToDel && (habitToDel.name.toLowerCase().includes("nofap") || habitToDel.name.toLowerCase().includes("retenção"))) {
-            return; // Bloqueia a deleção silenciosamente (Hábito Fixo)
+        if (habitToDel) {
+            const isFixedName = habitToDel.name.toLowerCase().includes("nofap") || habitToDel.name.toLowerCase().includes("retenção");
+            if (isFixedName) {
+                // Só bloqueia se for o ÚNICO hábito de nofap que restou
+                const otherFixedHabits = habits.filter(h => 
+                    h.id !== id && 
+                    (h.name.toLowerCase().includes("nofap") || h.name.toLowerCase().includes("retenção"))
+                );
+                if (otherFixedHabits.length === 0) {
+                    return; // Bloqueia: é o último
+                }
+            }
         }
         
         // Optimistic
