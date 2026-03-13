@@ -16,8 +16,22 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "SHADOWS - Discipline is Freedom",
-  description: "Substitua maus hábitos por bons. Torne-se o homem que você pode ser.",
+  description: "Substitua maus hábitos por bons. Torne-se o homem que você pode ser através do SHADOWS.",
   manifest: "/manifest.json",
+  metadataBase: new URL("https://appfortaleza.vercel.app"), // Altere para seu domínio real se necessário
+  openGraph: {
+    title: "SHADOWS - Discipline is Freedom",
+    description: "Prepare-se para o combate. Substitua maus hábitos por bons.",
+    url: "https://appfortaleza.vercel.app",
+    siteName: "SHADOWS",
+    locale: "pt_BR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SHADOWS - Discipline is Freedom",
+    description: "Substitua maus hábitos por bons. Torne-se o homem que você pode ser.",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

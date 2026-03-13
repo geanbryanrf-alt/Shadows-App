@@ -42,6 +42,9 @@ interface AppContextValue {
     onboardingComplete: boolean;
     completeOnboarding: (data: { age: number; faith_level: string; time_with_problem: string; motivation: string }) => Promise<void>;
     faithLevel: string | null;
+    age: number | null;
+    motivation: string | null;
+    timeWithProblem: string | null;
 
     // Pilar mais fraco (para Alfred)
     weakestPillar: string;
@@ -77,6 +80,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [profileId, setProfileId] = useState<string | null>(null);
     const [onboardingComplete, setOnboardingComplete] = useState<boolean>(true); // Default true para evitar flash em quem já fez
     const [faithLevel, setFaithLevel] = useState<string | null>(null);
+    const [age, setAge] = useState<number | null>(null);
+    const [motivation, setMotivation] = useState<string | null>(null);
+    const [timeWithProblem, setTimeWithProblem] = useState<string | null>(null);
 
     // ─── Autenticação Inicial ────────────────────────────────────────::::
     useEffect(() => {
@@ -134,6 +140,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
                     setRebootStartDate(profile.created_at); // Simplificação provisória
                     setOnboardingComplete(profile.onboarding_complete || false);
                     setFaithLevel(profile.faith_level || null);
+                    setAge(profile.age || null);
+                    setMotivation(profile.motivation || null);
+                    setTimeWithProblem(profile.time_with_problem || null);
                 }
 
                 // 2. Pegar Hábitos Ativos do Usuário
@@ -363,7 +372,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             habits, setHabits, toggleHabitDay, addHabit, deleteHabit,
             currentDayIndex, completedToday, totalHabits, progressToday,
             rebootDays, rebootStartDate, startReboot, resetReboot,
-            onboardingComplete, completeOnboarding, faithLevel,
+            onboardingComplete, completeOnboarding, faithLevel, age, motivation, timeWithProblem,
             weakestPillar,
         }}>
             {children}

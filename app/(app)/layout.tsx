@@ -1,3 +1,5 @@
+"use client";
+
 import { Header } from "@/components/ui/Header";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { SOSButton } from "@/components/ui/SOSButton";

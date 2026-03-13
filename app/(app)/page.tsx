@@ -164,65 +164,80 @@ export default function DashboardPage() {
                         {/* Lista de Hábitos */}
                         <div className="flex flex-col">
                             <AnimatePresence>
-                                {habits.map((habit) => (
+                                {habits.length === 0 ? (
                                     <motion.div
-                                        layout
-                                        key={habit.id}
-                                        className="grid grid-cols-[160px_repeat(7,1fr)_36px] gap-1 items-center px-0 py-3 group border-b border-white/[0.03] last:border-0 hover:bg-white/[0.01] transition-all"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        className="py-12 px-6 text-center flex flex-col items-center gap-3"
                                     >
-                                        <div className="flex items-center gap-2 overflow-hidden pr-2">
-                                            <span className="text-lg flex-shrink-0">{habit.emoji}</span>
-                                            <span className="text-[12px] text-text-primary font-semibold line-clamp-1">
-                                                {habit.name}
-                                            </span>
+                                        <div className="w-12 h-12 rounded-full bg-cyan/5 border border-cyan/10 flex items-center justify-center text-cyan/30">
+                                            <Plus size={24} />
                                         </div>
-
-                                        {habit.completions.map((checked: boolean, i: number) => (
-                                            <div key={i} className="flex justify-center">
-                                                <motion.button
-                                                    whileTap={{ scale: 0.75 }}
-                                                    style={{ WebkitTapHighlightColor: "transparent" }}
-                                                    onClick={() => {
-                                                        const d = new Date();
-                                                        const dow = d.getDay();
-                                                        const mondayOffset = dow === 0 ? -6 : 1 - dow;
-                                                        const clickDate = new Date(d);
-                                                        clickDate.setDate(d.getDate() + mondayOffset + i);
-                                                        toggleHabitDay(habit.id, i, clickDate.toISOString());
-                                                    }}
-                                                    className={cn(
-                                                        "w-7 h-7 rounded-lg border-2 flex items-center justify-center transition-all duration-200",
-                                                        i === currentDayIndex
-                                                            ? checked
-                                                                ? "bg-cyan/20 border-cyan text-cyan shadow-[0_0_12px_rgba(0,212,255,0.25)]"
-                                                                : "border-cyan/40 bg-transparent"
-                                                            : checked
-                                                                ? "bg-white/10 border-white/30 text-white/70"
-                                                                : "border-white/10 bg-transparent"
-                                                    )}
-                                                >
-                                                    {checked && (
-                                                        <motion.svg
-                                                            initial={{ scale: 0, opacity: 0 }}
-                                                            animate={{ scale: 1, opacity: 1 }}
-                                                            width="11" height="9" viewBox="0 0 12 10" fill="none"
-                                                        >
-                                                            <path d="M1 5L4.5 8.5L11 1.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                        </motion.svg>
-                                                    )}
-                                                </motion.button>
-                                            </div>
-                                        ))}
-
-                                        {/* Ações */}
-                                        <div className="flex items-center justify-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <button className="text-text-muted hover:text-cyan p-1 transition-colors"><Pencil size={13} /></button>
-                                            {!habit.name.toLowerCase().includes('nofap') && !habit.name.toLowerCase().includes('retenção') && (
-                                                <button onClick={() => deleteHabit(habit.id)} className="text-text-muted hover:text-red-400 p-1 transition-colors"><Trash2 size={13} /></button>
-                                            )}
-                                        </div>
+                                        <p className="text-[13px] text-white/40 font-serif italic">
+                                            "Sua fortaleza está vazia. Comece a construir sua primeira torre adicionando um hábito abaixo."
+                                        </p>
                                     </motion.div>
-                                ))}
+                                ) : (
+                                    habits.map((habit) => (
+                                        <motion.div
+                                            layout
+                                            key={habit.id}
+                                            className="grid grid-cols-[160px_repeat(7,1fr)_36px] gap-1 items-center px-0 py-3 group border-b border-white/[0.03] last:border-0 hover:bg-white/[0.01] transition-all"
+                                        >
+                                            <div className="flex items-center gap-2 overflow-hidden pr-2">
+                                                <span className="text-lg flex-shrink-0">{habit.emoji}</span>
+                                                <span className="text-[12px] text-text-primary font-semibold line-clamp-1">
+                                                    {habit.name}
+                                                </span>
+                                            </div>
+
+                                            {habit.completions.map((checked: boolean, i: number) => (
+                                                <div key={i} className="flex justify-center">
+                                                    <motion.button
+                                                        whileTap={{ scale: 0.75 }}
+                                                        style={{ WebkitTapHighlightColor: "transparent" }}
+                                                        onClick={() => {
+                                                            const d = new Date();
+                                                            const dow = d.getDay();
+                                                            const mondayOffset = dow === 0 ? -6 : 1 - dow;
+                                                            const clickDate = new Date(d);
+                                                            clickDate.setDate(d.getDate() + mondayOffset + i);
+                                                            toggleHabitDay(habit.id, i, clickDate.toISOString());
+                                                        }}
+                                                        className={cn(
+                                                            "w-7 h-7 rounded-lg border-2 flex items-center justify-center transition-all duration-200",
+                                                            i === currentDayIndex
+                                                                ? checked
+                                                                    ? "bg-cyan/20 border-cyan text-cyan shadow-[0_0_12px_rgba(0,212,255,0.25)]"
+                                                                    : "border-cyan/40 bg-transparent"
+                                                                : checked
+                                                                    ? "bg-white/10 border-white/30 text-white/70"
+                                                                    : "border-white/10 bg-transparent"
+                                                        )}
+                                                    >
+                                                        {checked && (
+                                                            <motion.svg
+                                                                initial={{ scale: 0, opacity: 0 }}
+                                                                animate={{ scale: 1, opacity: 1 }}
+                                                                width="11" height="9" viewBox="0 0 12 10" fill="none"
+                                                            >
+                                                                <path d="M1 5L4.5 8.5L11 1.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            </motion.svg>
+                                                        )}
+                                                    </motion.button>
+                                                </div>
+                                            ))}
+
+                                            {/* Ações */}
+                                            <div className="flex items-center justify-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button className="text-text-muted hover:text-cyan p-1 transition-colors"><Pencil size={13} /></button>
+                                                {!habit.name.toLowerCase().includes('nofap') && !habit.name.toLowerCase().includes('retenção') && (
+                                                    <button onClick={() => deleteHabit(habit.id)} className="text-text-muted hover:text-red-400 p-1 transition-colors"><Trash2 size={13} /></button>
+                                                )}
+                                            </div>
+                                        </motion.div>
+                                    ))
+                                )}
                             </AnimatePresence>
                         </div>
                     </div>
