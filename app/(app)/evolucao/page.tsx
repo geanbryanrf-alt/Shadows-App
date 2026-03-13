@@ -156,43 +156,6 @@ export default function EvolucaoPage() {
                 <p className="text-[10px] text-cyan uppercase tracking-widest drop-shadow-[0_0_5px_rgba(0,212,255,0.5)]">— Ra&apos;s al Ghul</p>
             </div>
 
-            {/* Reboot Clock */}
-            <motion.section
-                whileHover={{ scale: 1.01 }}
-                className="glass-card glow-cyan-hover rounded-2xl p-6 relative overflow-hidden flex flex-col items-center border-t border-t-cyan/20"
-                style={{ background: 'radial-gradient(circle at top, #121c2c, #080a0f)' }}
-            >
-                <span className="text-[10px] uppercase tracking-[0.2em] text-cyan font-bold mb-4 drop-shadow-[0_0_5px_rgba(0,212,255,0.3)]">
-                    REBOOT CLOCK
-                </span>
-
-                <div className="flex gap-4 items-center">
-                    <div className="flex flex-col items-center">
-                        <span className="text-5xl font-light text-text-primary tracking-tighter">07</span>
-                        <span className="text-[8px] uppercase tracking-widest text-text-secondary">Dias</span>
-                    </div>
-                    <span className="text-2xl font-thin text-cyan opacity-50 mb-4">:</span>
-                    <div className="flex flex-col items-center">
-                        <span className="text-5xl font-light text-text-primary tracking-tighter">14</span>
-                        <span className="text-[8px] uppercase tracking-widest text-text-secondary">Horas</span>
-                    </div>
-                    <span className="text-2xl font-thin text-cyan opacity-50 mb-4">:</span>
-                    <div className="flex flex-col items-center">
-                        <span className="text-5xl font-light text-text-primary tracking-tighter">22</span>
-                        <span className="text-[8px] uppercase tracking-widest text-text-secondary">Minutos</span>
-                    </div>
-                </div>
-
-                <div className="mt-6 w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                    <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(currentRebootDay / 90) * 100}%` }}
-                        className="h-full bg-cyan shadow-[0_0_10px_rgba(0,212,255,1)]"
-                    />
-                </div>
-                <p className="text-[9px] uppercase tracking-widest text-text-muted mt-3">Rumo aos 90 dias de liberdade total.</p>
-            </motion.section>
-
             {/* ======== STATUS DO GUERREIRO (RPG Attributes) ======== */}
             <section>
                 <div className="flex items-center gap-2 mb-5">
