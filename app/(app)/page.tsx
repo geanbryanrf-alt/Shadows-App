@@ -22,17 +22,7 @@ const MOCK_STATS_LABELS = [
 
 const DAYS_ABBR = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
 
-// Calcula os 7 dias da semana atual (Seg-Dom) para mostrar na grid
-function getWeekDates(): number[] {
-    const today = new Date();
-    const dow = today.getDay(); // 0=Dom
-    const mondayOffset = dow === 0 ? -6 : 1 - dow;
-    return Array.from({ length: 7 }, (_, i) => {
-        const d = new Date(today);
-        d.setDate(today.getDate() + mondayOffset + i);
-        return d.getDate();
-    });
-}
+// ─── Componente ──────────────────────────────────────────────────────────────
 
 export default function DashboardPage() {
     const {
@@ -76,7 +66,7 @@ export default function DashboardPage() {
         const d = new Date();
         d.setDate(d.getDate() + (weekOffset * 7));
         loadLogsForDate(d);
-    }, [weekOffset]);
+    }, [weekOffset, loadLogsForDate]);
 
     // Detectar dia perfeito e mostrar recompensa
     useEffect(() => {

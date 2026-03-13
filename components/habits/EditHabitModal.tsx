@@ -43,7 +43,7 @@ export function EditHabitModal({ isOpen, onClose, habit, onSave, onDelete }: Edi
         onSave(habit.id, {
             name,
             emoji: selectedEmoji,
-            pillar: selectedPillar as any
+            pillar: selectedPillar as Habit['pillar']
         });
         onClose();
     };
