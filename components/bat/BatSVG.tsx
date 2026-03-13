@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 // Morcego progressivo: começa invisível e vai aparecendo conforme hábitos são completados
 export function BatSVG({ progress, className }: { progress: number; className?: string }) {
@@ -31,7 +31,7 @@ export function BatSVG({ progress, className }: { progress: number; className?: 
     const filterStyle = `brightness(0) invert(1) contrast(${contrast}%) ${glowStyle}`.trim();
 
     // Animação de bater asas (wing flap)
-    const flapVariants = {
+    const flapVariants: Variants = {
         flap: {
             scaleX: [1, 1.1, 1], // Expande e contrai horizontalmente
             scaleY: [1, 0.9, 1], // Leve contração vertical
